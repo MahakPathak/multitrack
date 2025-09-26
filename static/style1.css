@@ -1,0 +1,181 @@
+/* Global styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    background: #ffffff; /* white background */
+    color: #333;
+}
+
+/* Heading */
+h1 {
+    text-align: center;
+    color: white;               /* white text */
+    background-color: #0077cc;  /* blue background */
+    padding: 15px 20px;
+    border: 3px solid #005fa3;  /* darker blue border */
+    border-radius: 12px;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+/* Form container */
+form {
+    max-width: 500px;
+    margin: auto;
+    background: #ffffff;
+    padding: 30px 35px;
+    border-radius: 20px;        /* more rounded */
+    border: 4px solid #0077cc;  /* thicker blue border */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Labels */
+label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: black; /* labels black */
+}
+
+/* Inputs & selects */
+input, select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 15px;        /* more rounded */
+    border: 3px solid #0077cc;  /* thicker border */
+    outline: none;
+    transition: 0.3s;
+    color: black;                
+    font-weight: 500;
+    background: #ffffff;
+}
+
+/* Select options text */
+select option {
+    color: black;
+}
+
+/* Focus effect */
+input:focus, select:focus {
+    border-color: #005fa3;
+    box-shadow: 0 0 5px rgba(0, 119, 204, 0.3);
+}
+
+/* Button */
+button {
+    margin-top: 15px;
+    padding: 14px;
+    width: 100%;
+    background: #0077cc;
+    color: white;
+    font-weight: 600;
+    border: 3px solid #005fa3;  
+    border-radius: 15px;         
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #005fa3;
+    border-color: #0077cc;
+}
+
+
+
+
+
+
+
+
+
+/* Results section */
+#results {
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+    padding: 15px;
+    background: #e6f0fa; /* subtle light blue */
+    border-radius: 12px;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #005fa3;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+table th, table td {
+    border: 1px solid #0077cc;
+    padding: 8px 12px;
+    text-align: center;
+    border-radius: 6px;
+}
+
+table th {
+    background-color: #0077cc;
+    color: white;
+}
+
+/* Highlight alerts */
+table td[style*="background:#fdd"] {
+    font-weight: bold;
+}
+
+/* Metro map container */
+#metro-map {
+    position: relative;
+    width: 600px;
+    height: 220px;
+    background: #eef; /* light blueish background */
+    margin: 30px auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Tracks */
+.track {
+    position: absolute;
+    height: 6px;
+    border-radius: 3px;
+    width: 500px;
+    left: 50px;
+}
+
+#line1 { top: 40px; background:#0077cc; }
+#line2 { top: 100px; background:#00aa44; }
+#line3 { top: 160px; background:#cc7700; }
+
+/* Rake placeholder style */
+.rake {
+    position: absolute;
+    width: 40px;
+    height: 12px;
+    border-radius: 3px;
+    top: 0;
+}
+
+/* Responsive design */
+@media screen and (max-width: 650px) {
+    #metro-map {
+        width: 90%;
+        height: 180px;
+    }
+    .track {
+        width: 85%;
+        left: 7.5%;
+    }
+    form {
+        width: 90%;
+        padding: 20px;
+    }
+    #results, #top-bar {
+        width: 90%;
+    }
+}

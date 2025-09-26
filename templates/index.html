@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kochi Metro Rake Prediction</title>
+  <!-- ✅ Load CSS from Flask's static folder -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}">
+</head>
+<body>
+  <h1>🚇 Kochi Metro Rake Prediction</h1>
+
+  <form id="predictForm">
+    <label for="dow">Day of Week (0=Mon … 6=Sun):</label>
+    <input type="number" id="dow" min="0" max="6" required>
+
+    <label for="month">Month (1–12):</label>
+    <input type="number" id="month" min="1" max="12" required>
+
+    <label for="is_weekend">Is Weekend (0/1):</label>
+    <select id="is_weekend">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </select>
+
+    <label for="is_holiday">Is Holiday (0/1):</label>
+    <select id="is_holiday">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </select>
+
+    <label for="special_event">Special Event (0/1):</label>
+    <select id="special_event">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </select>
+
+    <label for="temp">Temperature (°C):</label>
+    <input type="number" id="temp" step="0.1" required>
+
+    <button type="submit">Predict</button>
+  </form>
+
+  <div id="results"></div>
+
+  <div id="metro-map">
+    <div id="line1" class="track"></div>
+    <div id="line2" class="track"></div>
+    <div id="line3" class="track"></div>
+  </div>
+
+  <!-- ✅ Load JS from Flask's static folder -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

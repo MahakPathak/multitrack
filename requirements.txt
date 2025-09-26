@@ -1,0 +1,9 @@
+flask
+flask-cors
+asgiref
+numpy
+pandas
+scikit-learn
+matplotlib
+reportlab
+joblib
