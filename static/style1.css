@@ -1,181 +1,524 @@
-/* Global styles */
+/* --- Global Styles & Variables --- */
+:root {
+    --primary-color: #0052D4;
+    --secondary-color: #4364F7;
+    --accent-color: #6FB1FC;
+    --bg-color: #f0f2f5;
+    --card-bg-color: #ffffff;
+    --text-color: #333;
+    --light-text-color: #666;
+    --border-color: #dde2e7;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    --border-radius: 12px;
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 20px;
-    background: #ffffff; /* white background */
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* --- Header --- */
+header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 2rem 1rem;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 82, 212, 0.3);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+header p {
+    margin: 0.5rem 0 0;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* --- Main Layout Container --- */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* --- Card Base Style --- */
+.card {
+    background: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+.card h2, .card h3 {
+    margin-top: 0;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* --- Form Card --- */
+.form-card {
+    flex: 1;
+    min-width: 350px;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.2s ease-in-out;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 82, 212, 0.2);
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 82, 212, 0.3);
+}
+
+/* --- Results Card --- */
+.results-card {
+    flex: 2;
+    min-width: 400px;
+}
+
+.placeholder {
+    color: var(--light-text-color);
+    text-align: center;
+    font-style: italic;
+    padding: 2rem;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+#results p {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+/* --- New Alert Box Styles --- */
+#alert-container {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #fff2e6; /* Light orange background */
+    border: 1px solid #ffd1a8;   /* Orange border */
+    border-radius: var(--border-radius);
+}
+
+#alert-container h3 {
+    margin: 0 0 1rem 0;
+    padding: 0;
+    border-bottom: none;
+    color: #e65100; /* Dark orange text */
+    font-size: 1.2rem;
+}
+
+.alert-box {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border-left: 5px solid #fb8c00; /* Accent border */
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    font-weight: 500;
     color: #333;
 }
 
-/* Heading */
-h1 {
+.alert-box:last-child {
+    margin-bottom: 0;
+}
+
+/* --- General Improvements --- */
+.total-demand {
     text-align: center;
-    color: white;               /* white text */
-    background-color: #0077cc;  /* blue background */
-    padding: 15px 20px;
-    border: 3px solid #005fa3;  /* darker blue border */
-    border-radius: 12px;
-    margin-bottom: 30px;
-    font-size: 2rem;
-}
-
-/* Form container */
-form {
-    max-width: 500px;
-    margin: auto;
-    background: #ffffff;
-    padding: 30px 35px;
-    border-radius: 20px;        /* more rounded */
-    border: 4px solid #0077cc;  /* thicker blue border */
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-}
-
-/* Labels */
-label {
+    font-size: 1.2rem;
     font-weight: 600;
-    margin-bottom: 5px;
-    color: black; /* labels black */
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: #e9eef5;
+    border-radius: 8px;
 }
 
-/* Inputs & selects */
-input, select {
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 15px;        /* more rounded */
-    border: 3px solid #0077cc;  /* thicker border */
-    outline: none;
-    transition: 0.3s;
-    color: black;                
-    font-weight: 500;
-    background: #ffffff;
+/* Use classes for table cell highlighting */
+.demand-exceeded {
+    background-color: #ffebee !important;
+    color: #c62828;
+    font-weight: 700;
+}
+.demand-exceeded-light {
+     background-color: #fff0f0 !important;
 }
 
-/* Select options text */
-select option {
-    color: black;
-}
-
-/* Focus effect */
-input:focus, select:focus {
-    border-color: #005fa3;
-    box-shadow: 0 0 5px rgba(0, 119, 204, 0.3);
-}
-
-/* Button */
-button {
-    margin-top: 15px;
-    padding: 14px;
-    width: 100%;
-    background: #0077cc;
-    color: white;
-    font-weight: 600;
-    border: 3px solid #005fa3;  
-    border-radius: 15px;         
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    background: #005fa3;
-    border-color: #0077cc;
-}
-
-
-
-
-
-
-
-
-
-/* Results section */
-#results {
-    max-width: 600px;
-    margin: 0 auto 30px auto;
-    padding: 15px;
-    background: #e6f0fa; /* subtle light blue */
-    border-radius: 12px;
-    text-align: center;
-    font-size: 1.1rem;
-    color: #005fa3;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-/* Tables */
+/* Tables Styling */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 10px 0;
+    margin: 1.5rem 0;
 }
 
 table th, table td {
-    border: 1px solid #0077cc;
-    padding: 8px 12px;
+    padding: 0.8rem 1rem;
     text-align: center;
-    border-radius: 6px;
+    border-bottom: 1px solid var(--border-color);
 }
 
 table th {
-    background-color: #0077cc;
-    color: white;
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: var(--primary-color);
 }
 
-/* Highlight alerts */
-table td[style*="background:#fdd"] {
-    font-weight: bold;
+table tr:last-child td {
+    border-bottom: none;
 }
 
-/* Metro map container */
+table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+/* Highlight for over-demand cells */
+td[style*="background:#fdd"] {
+    background-color: #ffebee !important;
+    color: #c62828;
+    font-weight: 700;
+}
+
+/* --- Metro Map Visualization --- */
 #metro-map {
     position: relative;
-    width: 600px;
+    width: 100%;
     height: 220px;
-    background: #eef; /* light blueish background */
-    margin: 30px auto;
-    border-radius: 12px;
+    background: #e9eef5;
+    margin-top: 1.5rem;
+    border-radius: var(--border-radius);
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 1rem 0;
 }
 
-/* Tracks */
 .track {
     position: absolute;
-    height: 6px;
-    border-radius: 3px;
-    width: 500px;
-    left: 50px;
+    width: calc(100% - 40px);
+    height: 8px;
+    left: 20px;
+    border-radius: 4px;
+    background-color: #ccc;
 }
 
-#line1 { top: 40px; background:#0077cc; }
-#line2 { top: 100px; background:#00aa44; }
-#line3 { top: 160px; background:#cc7700; }
+.track-label {
+    position: absolute;
+    left: -60px;
+    top: -5px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--light-text-color);
+}
 
-/* Rake placeholder style */
+#line1 { top: 40px; background-color: #0077cc; }
+#line2 { top: 100px; background-color: #00aa44; }
+#line3 { top: 160px; background-color: #cc7700; }
+
 .rake {
     position: absolute;
-    width: 40px;
-    height: 12px;
-    border-radius: 3px;
-    top: 0;
+    width: 45px;
+    height: 16px;
+    border-radius: 4px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Responsive design */
-@media screen and (max-width: 650px) {
-    #metro-map {
-        width: 90%;
-        height: 180px;
+/* --- Responsive Design --- */
+@media (max-width: 992px) {
+    .container {
+        flex-direction: column;
     }
-    .track {
-        width: 85%;
-        left: 7.5%;
+    header h1 {
+        font-size: 2rem;
     }
-    form {
-        width: 90%;
-        padding: 20px;
-    }
-    #results, #top-bar {
-        width: 90%;
-    }
+}
+
+
+/* --- NEW: Daily Requirement Stat Cards --- */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.stat-card {
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-top: 4px solid var(--primary-color);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+}
+
+.stat-card.warning {
+    border-top-color: #d93025;
+}
+
+.stat-header {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.stat-body {
+    display: flex;
+    justify-content: space-around;
+}
+
+.stat-item .stat-label {
+    font-size: 0.9rem;
+    color: var(--light-text-color);
+    display: block;
+}
+
+.stat-item .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.stat-card.warning .stat-item .stat-value {
+    color: #c62828;
+}
+
+/* --- NEW: Enhanced Hourly Schedule Table --- */
+.hourly-schedule {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden; /* Ensures border-radius clips the table content */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.hourly-schedule th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+.hourly-schedule td {
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.hourly-schedule tr:nth-child(even) {
+    background-color: transparent; /* Disable zebra-striping */
+}
+
+.hourly-schedule tr.rush-hour td:first-child {
+    font-weight: 700;
+    color: var(--secondary-color);
+    position: relative;
+}
+
+/* Heat Map Cell Styles */
+.demand-low { background-color: #e8f5e9; }
+.demand-medium { background-color: #fffde7; }
+.demand-high { background-color: #fff3e0; }
+.demand-exceeded-cell { 
+    background-color: #ffebee !important;
+    color: #c62828;
+    font-weight: 700;
+}
+
+
+
+/* --- NEW: Metro Map Visualization (Dark Theme) --- */
+#metro-map {
+    background: #2c3e50; /* Dark blue-gray background */
+    padding: 2rem 0;
+    border: 1px solid #34495e;
+    height: 240px; /* Increased height for better spacing */
+}
+
+.track {
+    height: 6px; /* Thinner track */
+    border-radius: 3px;
+    width: calc(100% - 80px); /* Shorter track for endpoints */
+    left: 40px;
+    opacity: 0.7;
+}
+
+/* Create endpoint circles for the tracks */
+.track::before, .track::after {
+    content: '';
+    position: absolute;
+    top: -3px; /* Center on the track */
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #7f8c8d;
+}
+
+.track::before {
+    left: -6px; /* Position at the start */
+}
+
+.track::after {
+    right: -6px; /* Position at the end */
+}
+
+/* Use brighter colors from JS */
+#line1 { background-color: #3498db; }
+#line2 { background-color: #2ecc71; }
+#line3 { background-color: #e67e22; }
+
+/* --- NEW: Animated Rake (Circular Train) Style --- */
+/* --- NEW: Multi-Car Train Animation Styles --- */
+.train-container {
+    position: absolute;
+    display: flex; /* This lines up the cars in a row */
+    align-items: center;
+    height: 24px;
+}
+
+.train-car {
+    position: relative;
+    width: 40px;
+    height: 22px;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    margin-right: 4px; /* Creates the gap between cars */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Special style for the first car (the engine) */
+.train-engine {
+    width: 45px; /* Slightly longer than other cars */
+    border-radius: 4px 8px 8px 4px; /* Gives it a rounded "front" */
+}
+
+/* Adds a small "window" to the engine car for detail */
+.train-engine::before {
+    content: '';
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    width: 12px;
+    height: 8px;
+    background: #d5f3ff;
+    border-radius: 2px;
+    opacity: 0.8;
+}
+
+/* --- NEW: Multi-Car Train Animation Styles (Updated) --- */
+.train-container {
+    position: absolute;
+    display: flex;
+    flex-direction: row-reverse; /* Reverses order to put car #1 on the right */
+    align-items: center;
+    height: 24px;
+    gap: 8px; /* Adds a clean 8px space ONLY between cars */
+}
+
+.train-car {
+    position: relative;
+    width: 40px;
+    height: 22px;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    /* No margin needed here anymore, 'gap' handles it */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Special style for the first car (the engine) */
+.train-engine {
+    width: 45px; /* Slightly longer than other cars */
+    /* Adjusts border-radius for the new direction (front is on the right) */
+    border-radius: 8px 4px 4px 8px; 
+}
+
+/* Adds a small "window" to the engine car for detail */
+.train-engine::before {
+    content: '';
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    width: 12px;
+    height: 8px;
+    background: #d5f3ff;
+    border-radius: 2px;
+    opacity: 0.8;
 }

@@ -30,7 +30,10 @@ def predict():
         is_weekend = data.get("is_weekend", 0)
         is_holiday = data.get("is_holiday", 0)
         special_event = data.get("special_event", 0)
-        temp = data.get("temp", 28.0)
+        # NEW, more robust code
+        temp = data.get("temp")
+        if temp is None:
+            temp = 28.0
 
         # -----------------------------
         # Dynamic synthetic predictions

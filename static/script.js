@@ -1,3 +1,5 @@
+// This will store active animation loops to clear them later
+let activeIntervals = [];
 document.getElementById("predictForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
@@ -23,57 +25,97 @@ document.getElementById("predictForm").addEventListener("submit", async function
 
         if(result.status === "success") {
             // -----------------------------
-            // Show Predicted Rakes Table
+            // Clear previous results and prepare new content
             // -----------------------------
-            let tableHTML = `<table>
-                <tr><th>Line</th><th>Predicted Rakes</th><th>Available Rakes</th></tr>`;
+            let resultsHTML = '';
+
+            // -----------------------------
+            // Create Alert Boxes (if any)
+            // -----------------------------
+            if (result.alerts.length > 0) {
+                resultsHTML += `<div id="alert-container">
+                                 <h3><i class="fa-solid fa-triangle-exclamation"></i> System Alerts</h3>`;
+                result.alerts.forEach(alertText => {
+                    resultsHTML += `<div class="alert-box">${alertText}</div>`;
+                });
+                resultsHTML += `</div>`;
+            }
+            
+            // -----------------------------
+            // NEW: Create Daily Rake Requirement Stat Cards
+            // -----------------------------
+            resultsHTML += `<h3><i class="fa-solid fa-clipboard-list"></i> Daily Rake Requirement</h3>`;
+            let statsHTML = '<div class="stats-container">';
             for(const line of Object.keys(result.predictions)) {
                 const pred = result.predictions[line];
                 const avail = result.available_rakes[line];
-                tableHTML += `<tr${pred > avail ? ' style="background:#fdd;"' : ''}>
-                                <td>${line}</td>
-                                <td>${pred}</td>
-                                <td>${avail}</td>
-                              </tr>`;
+                const isExceeded = pred > avail;
+                
+                statsHTML += `
+                    <div class="stat-card ${isExceeded ? 'warning' : ''}">
+                        <div class="stat-header">${line}</div>
+                        <div class="stat-body">
+                            <div class="stat-item">
+                                <span class="stat-label">Predicted</span>
+                                <span class="stat-value">${pred}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Available</span>
+                                <span class="stat-value">${avail}</span>
+                            </div>
+                        </div>
+                    </div>`;
             }
-            tableHTML += `</table>`;
-            document.getElementById("results").innerHTML = tableHTML;
+            statsHTML += '</div>';
+            resultsHTML += statsHTML;
+
 
             // -----------------------------
             // Show total demand
             // -----------------------------
-            const totalHTML = `<p><strong>Total Demand:</strong> ${result.total_demand}</p>`;
-            document.getElementById("results").innerHTML += totalHTML;
+            resultsHTML += `<p class="total-demand"><strong>Total Predicted Demand:</strong> ${result.total_demand} Rakes</p>`;
 
             // -----------------------------
-            // Show alerts
-            // -----------------------------
-            if(result.alerts.length > 0){
-                let alertHTML = `<p style="color:red;"><strong>Alerts:</strong><br>`;
-                alertHTML += result.alerts.join("<br>");
-                alertHTML += `</p>`;
-                document.getElementById("results").innerHTML += alertHTML;
-            }
-
-            // -----------------------------
-            // Show Hourly Schedule
+            // NEW: Create Enhanced Hourly Schedule Table
             // -----------------------------
             if(result.hourly_schedule){
-                let scheduleHTML = `<h3>Hourly Schedule (Predicted Rakes)</h3>`;
-                scheduleHTML += `<table><tr><th>Hour</th><th>Line1</th><th>Line2</th><th>Line3</th></tr>`;
+                let scheduleHTML = `<h3><i class="fa-solid fa-clock"></i> Hourly Schedule (Heat Map)</h3>
+                                    <table class="hourly-schedule">
+                                    <thead>
+                                        <tr><th>Hour</th><th>Line 1</th><th>Line 2</th><th>Line 3</th></tr>
+                                    </thead>
+                                    <tbody>`;
                 for(const [hour, lines] of Object.entries(result.hourly_schedule)){
-                    scheduleHTML += `<tr>`;
-                    scheduleHTML += `<td>${hour}</td>`;
+                    const hourNum = parseInt(hour.split(':')[0]);
+                    const isRushHour = (hourNum >= 7 && hourNum <= 10) || (hourNum >= 17 && hourNum <= 20);
+                    
+                    scheduleHTML += `<tr class="${isRushHour ? 'rush-hour' : ''}"><td>${hour}</td>`;
+
                     for(const line of ["Line1","Line2","Line3"]){
                         const pred = lines[line];
                         const avail = result.available_rakes[line];
-                        scheduleHTML += `<td${pred > avail ? ' style="background:#fdd;"' : ''}>${pred}</td>`;
+                        let heatClass = '';
+                        if (pred > avail) {
+                            heatClass = 'demand-exceeded-cell';
+                        } else if (pred >= 5) {
+                            heatClass = 'demand-high';
+                        } else if (pred >= 3) {
+                            heatClass = 'demand-medium';
+                        } else {
+                            heatClass = 'demand-low';
+                        }
+                        scheduleHTML += `<td class="${heatClass}">${pred}</td>`;
                     }
                     scheduleHTML += `</tr>`;
                 }
-                scheduleHTML += `</table>`;
-                document.getElementById("results").innerHTML += scheduleHTML;
+                scheduleHTML += `</tbody></table>`;
+                resultsHTML += scheduleHTML;
             }
+
+            // -----------------------------
+            // Render all new content at once
+            // -----------------------------
+            document.getElementById("results").innerHTML = resultsHTML;
 
             // -----------------------------
             // Animate rakes on map
@@ -90,31 +132,62 @@ document.getElementById("predictForm").addEventListener("submit", async function
 });
 
 function animateRakes(predictions) {
+    // Clear all previous animation intervals to prevent memory leaks
+    activeIntervals.forEach(clearInterval);
+    activeIntervals = [];
+
     const trackInfo = {
-        Line1: {top: 40, color:'#0077cc'},
-        Line2: {top: 100, color:'#00aa44'},
-        Line3: {top: 160, color:'#cc7700'}
+        Line1: { top: 40, color: '#3498db' },
+        Line2: { top: 100, color: '#2ecc71' },
+        Line3: { top: 160, color: '#e67e22' }
     };
 
-    // Remove previous rakes
-    document.querySelectorAll(".rake").forEach(el => el.remove());
+    const map = document.getElementById("metro-map");
+    // Remove previous train elements from the map
+    map.querySelectorAll(".train-container").forEach(el => el.remove());
 
-    for(const [line, count] of Object.entries(predictions)) {
-        const spacing = 500 / Math.max(count, 1);
-        for(let i = 0; i < count; i++) {
-            const rake = document.createElement("div");
-            rake.classList.add("rake");
-            rake.style.background = trackInfo[line].color;
-            rake.style.top = (trackInfo[line].top - 6) + "px";
-            rake.style.left = (-40 - i*spacing) + "px";
-            document.getElementById("metro-map").appendChild(rake);
+    for (const [line, count] of Object.entries(predictions)) {
+        if (count === 0) continue; // Skip if no rakes are predicted
 
-            let pos = -40 - i*spacing;
-            setInterval(() => {
-                pos += 2;
-                if(pos > 530) pos = -40;
-                rake.style.left = pos + "px";
-            }, 30);
+        // Create a single container for the entire train
+        const trainContainer = document.createElement("div");
+        trainContainer.classList.add("train-container");
+        
+        // Center the train on the track line vertically (Car height is 24px)
+        trainContainer.style.top = (trackInfo[line].top - 12 + 3) + "px";
+
+        // Create and add the individual cars to the train
+        for (let i = 0; i < count; i++) {
+            const car = document.createElement("div");
+            car.classList.add("train-car");
+            car.textContent = i + 1; // Add the number
+            
+            // The first car is the engine
+            if (i === 0) {
+                car.classList.add("train-engine");
+            }
+            
+            car.style.backgroundColor = trackInfo[line].color;
+            trainContainer.appendChild(car);
         }
+
+        map.appendChild(trainContainer);
+
+        // Animate the entire train container as one unit
+        // Calculate train width: (car width + margin) * number of cars
+        const trainWidth = (40 + 4) * count; 
+        const mapWidth = map.offsetWidth;
+        let pos = -trainWidth; // Start fully off-screen to the left
+        trainContainer.style.left = pos + "px";
+
+        const intervalId = setInterval(() => {
+            pos += 2; // Adjust for speed
+            if (pos > mapWidth) {
+                pos = -trainWidth; // Reset when off-screen to the right
+            }
+            trainContainer.style.left = pos + "px";
+        }, 20);
+
+        activeIntervals.push(intervalId);
     }
 }
