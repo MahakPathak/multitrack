@@ -12,102 +12,98 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
     <link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}">
-     <!-- <link rel="stylesheet" href="../static/style1.css"> -->
 </head>
 <body>
 
     <header>
-        <h1><i class="fa-solid fa-train-subway"></i> Metro Rake Demand Forecaster</h1>
-        <p>Dynamic resource allocation for Kochi Metro</p>
+        <div class="header-content">
+            <h1><img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo" class="header-logo"><i class="fa-solid fa-train-subway"></i> Metro Rake Demand Forecaster</h1>
+            <div class="header-controls">
+                <button id="refreshBtn"><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
+                <label class="theme-switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
     </header>
 
     <main class="container">
         <div class="card form-card">
-            <h2><i class="fa-solid fa-sliders"></i> Control Panel</h2>
-            <form id="predictForm">
-                <div class="form-group">
-                    <label for="dow">Day of Week</label>
-                    <select id="dow" required>
-                        <option value="0">Monday</option>
-                        <option value="1">Tuesday</option>
-                        <option value="2">Wednesday</option>
-                        <option value="3">Thursday</option>
-                        <option value="4">Friday</option>
-                        <option value="5">Saturday</option>
-                        <option value="6">Sunday</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="month">Month</label>
-                    <select id="month" required>
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="temp">Temperature (°C)</label>
-                    <input type="number" id="temp" step="0.1" placeholder="e.g., 29.5" required>
-                </div>
-
-                <div class="form-grid">
+            <div class="card-header-styled">
+                <div class="card-header-icon"><i class="fa-solid fa-sliders"></i></div>
+                <h2>Control Panel</h2>
+            </div>
+            <div class="card-body">
+                <form id="predictForm">
                     <div class="form-group">
-                        <label for="is_weekend">Weekend?</label>
-                        <select id="is_weekend">
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
+                        <label for="dow">Day of Week</label>
+                        <select id="dow" required>
+                            <option value="0">Monday</option>
+                            <option value="1">Tuesday</option>
+                            <option value="2">Wednesday</option>
+                            <option value="3">Thursday</option>
+                            <option value="4">Friday</option>
+                            <option value="5">Saturday</option>
+                            <option value="6">Sunday</option>
                         </select>
                     </div>
+
                     <div class="form-group">
-                        <label for="is_holiday">Holiday?</label>
-                        <select id="is_holiday">
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
+                        <label for="month">Month</label>
+                        <select id="month" required>
+                            <option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option>
                         </select>
                     </div>
-                </div>
+                    
+                    <div class="form-group">
+                        <label for="temp">Temperature (°C)</label>
+                        <input type="number" id="temp" step="0.1" placeholder="e.g., 29.5" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="special_event">Special Event?</label>
-                    <select id="special_event">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="is_weekend">Weekend?</label>
+                            <select id="is_weekend"><option value="0">No</option><option value="1">Yes</option></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="is_holiday">Holiday?</label>
+                            <select id="is_holiday"><option value="0">No</option><option value="1">Yes</option></select>
+                        </div>
+                    </div>
 
-                <button type="submit">
-                    <i class="fa-solid fa-bolt"></i> Predict Demand
-                </button>
-            </form>
+                    <div class="form-group">
+                        <label for="special_event">Special Event?</label>
+                        <select id="special_event"><option value="0">No</option><option value="1">Yes</option></select>
+                    </div>
+
+                    <button type="submit">
+                        <i class="fa-solid fa-bolt"></i> Predict Demand
+                    </button>
+                </form>
+            </div>
         </div>
 
         <div class="card results-card">
-            <h2><i class="fa-solid fa-chart-simple"></i> Prediction Results</h2>
-            <div id="results">
-                <p class="placeholder">Results will be displayed here once you submit the form.</p>
+            <div class="card-header-styled">
+                <div class="card-header-icon"><i class="fa-solid fa-chart-simple"></i></div>
+                <h2>Prediction Results</h2>
             </div>
-            
-            <h3><i class="fa-solid fa-map-location-dot"></i> Live Rake Simulation</h3>
-            <div id="metro-map">
-                <div id="line1" class="track"><span class="track-label">Line 1</span></div>
-                <div id="line2" class="track"><span class="track-label">Line 2</span></div>
-                <div id="line3" class="track"><span class="track-label">Line 3</span></div>
+            <div class="card-body">
+                <div id="results">
+                    <p class="placeholder">Results will be displayed here once you submit the form.</p>
+                </div>
+                
+                <h3><i class="fa-solid fa-map-location-dot"></i> Live Rake Simulation</h3>
+                <div id="metro-map">
+                    <div id="line1" class="track"></div>
+                    <div id="line2" class="track"></div>
+                    <div id="line3" class="track"></div>
+                </div>
             </div>
         </div>
     </main>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <!-- <script src="../static/script.js"></script> -->
 </body>
 </html>

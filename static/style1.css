@@ -1,20 +1,31 @@
 /* --- Global Styles & Variables --- */
 :root {
-    --primary-color: #0052D4;
-    --secondary-color: #4364F7;
-    --accent-color: #6FB1FC;
-    --bg-color: #f0f2f5;
+    --font-family: 'Poppins', sans-serif;
+    --primary-color: #084298;
+    --primary-hover: #073a85;
+    --background-color: #f0f2f5;
     --card-bg-color: #ffffff;
     --text-color: #333;
     --light-text-color: #666;
     --border-color: #dde2e7;
-    --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    --border-radius: 12px;
+    --shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    --border-radius: 16px;
+}
+
+body.dark-mode {
+    --primary-color: #0d8eff;
+    --primary-hover: #3a9dff;
+    --background-color: #1a1a1a;
+    --card-bg-color: #2a2a2a;
+    --text-color: #e0e0e0;
+    --light-text-color: #aaa;
+    --border-color: #444;
+    --header-bg: #1f1f1f;
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--bg-color);
+    font-family: var(--font-family);
+    background-color: var(--background-color);
     color: var(--text-color);
     margin: 0;
     line-height: 1.6;
@@ -22,46 +33,95 @@ body {
 
 /* --- Header --- */
 header {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: var(--header-bg, var(--primary-color));
     color: white;
-    padding: 2rem 1rem;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 82, 212, 0.3);
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1600px;
+    margin: 0 auto;
 }
 
 header h1 {
     margin: 0;
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: 1.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
-header p {
-    margin: 0.5rem 0 0;
-    font-size: 1.1rem;
-    opacity: 0.9;
+.header-logo {
+    height: 50px;
 }
 
-/* --- Main Layout Container --- */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-controls button {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.header-controls button:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* --- Theme Switch --- */
+.theme-switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+.theme-switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(255,255,255,0.3);
+    transition: .4s; border-radius: 26px;
+}
+.slider:before {
+    position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px;
+    background-color: white; transition: .4s; border-radius: 50%;
+}
+input:checked + .slider { background-color: var(--primary-color); }
+input:checked + .slider:before { transform: translateX(24px); }
+
+/* --- Main Layout & Cards --- */
 .container {
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
     padding: 2rem;
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
 }
 
-/* --- Card Base Style --- */
 .card {
     background: var(--card-bg-color);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
-    padding: 2rem;
-    border: 1px solid var(--border-color);
+    border: none;
+    overflow: hidden;
 }
 
-.card h2, .card h3 {
-    margin-top: 0;
+.card h3 {
+    margin-top: 2rem;
     color: var(--primary-color);
     border-bottom: 2px solid var(--border-color);
     padding-bottom: 0.75rem;
@@ -71,27 +131,48 @@ header p {
     gap: 0.75rem;
 }
 
-/* --- Form Card --- */
-.form-card {
-    flex: 1;
-    min-width: 350px;
+.card-header-styled {
+    display: flex;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    color: white;
+    font-weight: 600;
+    background-color: var(--primary-color);
 }
 
-.form-group {
-    margin-bottom: 1.25rem;
+.card-header-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    margin-right: 1rem;
 }
 
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+.card-header-styled h2 {
+    margin: 0;
+    font-size: 1.3rem;
 }
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* --- Form --- */
+.form-card { flex: 1; min-width: 350px; }
+.results-card { flex: 2; min-width: 400px; }
+.form-group { margin-bottom: 1rem; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
 label {
     display: block;
     font-weight: 600;
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
+    color: var(--light-text-color);
 }
 
 input, select {
@@ -102,12 +183,14 @@ input, select {
     font-size: 1rem;
     font-family: 'Poppins', sans-serif;
     transition: all 0.2s ease-in-out;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 input:focus, select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 82, 212, 0.2);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 25%, transparent);
 }
 
 button[type="submit"] {
@@ -115,7 +198,7 @@ button[type="submit"] {
     padding: 1rem;
     border: none;
     border-radius: 8px;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: var(--primary-color);
     color: white;
     font-size: 1.1rem;
     font-weight: 600;
@@ -129,16 +212,12 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
+    background: var(--primary-hover);
     transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 82, 212, 0.3);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* --- Results Card --- */
-.results-card {
-    flex: 2;
-    min-width: 400px;
-}
-
+/* --- Results --- */
 .placeholder {
     color: var(--light-text-color);
     text-align: center;
@@ -148,33 +227,17 @@ button[type="submit"]:hover {
     border-radius: var(--border-radius);
 }
 
-#results p {
-    font-weight: 500;
-    font-size: 1.1rem;
-}
-
-/* --- New Alert Box Styles --- */
 #alert-container {
-    margin-bottom: 2rem;
     padding: 1.5rem;
-    background-color: #fff2e6; /* Light orange background */
-    border: 1px solid #ffd1a8;   /* Orange border */
+    background-color: #fff0f0;
+    border: 1px solid #ffc0c0;
     border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
 }
-
-#alert-container h3 {
-    margin: 0 0 1rem 0;
-    padding: 0;
-    border-bottom: none;
-    color: #e65100; /* Dark orange text */
-    font-size: 1.2rem;
-}
-
+#alert-container h3 { margin: 0 0 1rem 0; padding: 0; border: none; color: #c62828; }
 .alert-box {
-    display: flex;
-    align-items: center;
     background-color: #ffffff;
-    border-left: 5px solid #fb8c00; /* Accent border */
+    border-left: 5px solid #d93025;
     padding: 1rem;
     margin-bottom: 0.75rem;
     border-radius: 8px;
@@ -182,273 +245,85 @@ button[type="submit"]:hover {
     font-weight: 500;
     color: #333;
 }
+.alert-box:last-child { margin-bottom: 0; }
 
-.alert-box:last-child {
-    margin-bottom: 0;
-}
-
-/* --- General Improvements --- */
-.total-demand {
-    text-align: center;
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-top: 1.5rem;
-    padding: 1rem;
-    background-color: #e9eef5;
-    border-radius: 8px;
-}
-
-/* Use classes for table cell highlighting */
-.demand-exceeded {
-    background-color: #ffebee !important;
-    color: #c62828;
-    font-weight: 700;
-}
-.demand-exceeded-light {
-     background-color: #fff0f0 !important;
-}
-
-/* Tables Styling */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-}
-
-table th, table td {
-    padding: 0.8rem 1rem;
-    text-align: center;
-    border-bottom: 1px solid var(--border-color);
-}
-
-table th {
-    background-color: #f8f9fa;
-    font-weight: 600;
-    color: var(--primary-color);
-}
-
-table tr:last-child td {
-    border-bottom: none;
-}
-
-table tr:nth-child(even) {
-    background-color: #f8f9fa;
-}
-
-/* Highlight for over-demand cells */
-td[style*="background:#fdd"] {
-    background-color: #ffebee !important;
-    color: #c62828;
-    font-weight: 700;
-}
-
-/* --- Metro Map Visualization --- */
-#metro-map {
-    position: relative;
-    width: 100%;
-    height: 220px;
-    background: #e9eef5;
-    margin-top: 1.5rem;
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    padding: 1rem 0;
-}
-
-.track {
-    position: absolute;
-    width: calc(100% - 40px);
-    height: 8px;
-    left: 20px;
-    border-radius: 4px;
-    background-color: #ccc;
-}
-
-.track-label {
-    position: absolute;
-    left: -60px;
-    top: -5px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--light-text-color);
-}
-
-#line1 { top: 40px; background-color: #0077cc; }
-#line2 { top: 100px; background-color: #00aa44; }
-#line3 { top: 160px; background-color: #cc7700; }
-
-.rake {
-    position: absolute;
-    width: 45px;
-    height: 16px;
-    border-radius: 4px;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* --- Responsive Design --- */
-@media (max-width: 992px) {
-    .container {
-        flex-direction: column;
-    }
-    header h1 {
-        font-size: 2rem;
-    }
-}
-
-
-/* --- NEW: Daily Requirement Stat Cards --- */
 .stats-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
-    margin-top: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .stat-card {
-    background: #fff;
+    background: var(--card-bg-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     padding: 1.5rem;
     text-align: center;
-    transition: all 0.3s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     border-top: 4px solid var(--primary-color);
 }
+.stat-card.warning { border-top-color: #d93025; }
+.stat-header { font-size: 1.3rem; font-weight: 600; color: var(--text-color); }
+.stat-body { display: flex; justify-content: space-around; margin-top: 1rem; }
+.stat-item .stat-label { font-size: 0.9rem; color: var(--light-text-color); }
+.stat-item .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary-color); }
+.stat-card.warning .stat-item .stat-value { color: #c62828; }
 
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow);
-}
-
-.stat-card.warning {
-    border-top-color: #d93025;
-}
-
-.stat-header {
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--text-color);
-}
-
-.stat-body {
-    display: flex;
-    justify-content: space-around;
-}
-
-.stat-item .stat-label {
-    font-size: 0.9rem;
-    color: var(--light-text-color);
-    display: block;
-}
-
-.stat-item .stat-value {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--primary-color);
-}
-
-.stat-card.warning .stat-item .stat-value {
-    color: #c62828;
-}
-
-/* --- NEW: Enhanced Hourly Schedule Table --- */
 .hourly-schedule {
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    overflow: hidden; /* Ensures border-radius clips the table content */
+    overflow: hidden;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-top: 1.5rem;
 }
-
-.hourly-schedule th {
-    background-color: var(--primary-color);
-    color: white;
-    font-weight: 600;
-}
-
-.hourly-schedule td {
-    font-weight: 500;
-    transition: background-color 0.3s ease;
-}
-
-.hourly-schedule tr:nth-child(even) {
-    background-color: transparent; /* Disable zebra-striping */
-}
-
-.hourly-schedule tr.rush-hour td:first-child {
-    font-weight: 700;
-    color: var(--secondary-color);
-    position: relative;
-}
-
-/* Heat Map Cell Styles */
+.hourly-schedule table { width: 100%; border-collapse: collapse; }
+.hourly-schedule th, .hourly-schedule td { padding: 0.8rem 1rem; text-align: center; border-bottom: 1px solid var(--border-color); }
+.hourly-schedule th { background-color: var(--primary-color); color: white; }
+.hourly-schedule tr:last-child td { border-bottom: none; }
 .demand-low { background-color: #e8f5e9; }
 .demand-medium { background-color: #fffde7; }
 .demand-high { background-color: #fff3e0; }
-.demand-exceeded-cell { 
-    background-color: #ffebee !important;
-    color: #c62828;
-    font-weight: 700;
-}
+.demand-exceeded-cell { background-color: #ffebee !important; color: #c62828; font-weight: 700; }
 
-
-
-/* --- NEW: Metro Map Visualization (Dark Theme) --- */
+/* --- Metro Map --- */
 #metro-map {
-    background: #2c3e50; /* Dark blue-gray background */
-    padding: 2rem 0;
-    border: 1px solid #34495e;
-    height: 240px; /* Increased height for better spacing */
+    position: relative;
+    width: 100%;
+    height: 240px;
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    padding: 1rem 0;
 }
-
 .track {
-    height: 6px; /* Thinner track */
-    border-radius: 3px;
-    width: calc(100% - 80px); /* Shorter track for endpoints */
+    position: absolute;
+    width: calc(100% - 80px);
+    height: 8px;
     left: 40px;
-    opacity: 0.7;
+    border-radius: 4px;
+    background-color: #ccc;
 }
+#line1 { top: 50px; background-color: #3498db; }
+#line2 { top: 110px; background-color: #2ecc71; }
+#line3 { top: 170px; background-color: #e67e22; }
 
-/* Create endpoint circles for the tracks */
-.track::before, .track::after {
-    content: '';
-    position: absolute;
-    top: -3px; /* Center on the track */
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: #7f8c8d;
-}
-
-.track::before {
-    left: -6px; /* Position at the start */
-}
-
-.track::after {
-    right: -6px; /* Position at the end */
-}
-
-/* Use brighter colors from JS */
-#line1 { background-color: #3498db; }
-#line2 { background-color: #2ecc71; }
-#line3 { background-color: #e67e22; }
-
-/* --- NEW: Animated Rake (Circular Train) Style --- */
-/* --- NEW: Multi-Car Train Animation Styles --- */
 .train-container {
     position: absolute;
-    display: flex; /* This lines up the cars in a row */
+    display: flex;
     align-items: center;
     height: 24px;
+    gap: 4px;
+    /* CHANGED: This line reverses the visual order of the cars */
+    flex-direction: row-reverse;
 }
-
 .train-car {
     position: relative;
     width: 40px;
     height: 22px;
     border: 1px solid rgba(0, 0, 0, 0.4);
     border-radius: 4px;
-    margin-right: 4px; /* Creates the gap between cars */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -457,68 +332,15 @@ td[style*="background:#fdd"] {
     font-size: 0.9rem;
     box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
-
-/* Special style for the first car (the engine) */
 .train-engine {
-    width: 45px; /* Slightly longer than other cars */
-    border-radius: 4px 8px 8px 4px; /* Gives it a rounded "front" */
+    width: 45px;
+    /* CHANGED: This reverses the engine's rounded front to face left */
+    border-radius: 8px 4px 4px 8px;
 }
 
-/* Adds a small "window" to the engine car for detail */
-.train-engine::before {
-    content: '';
-    position: absolute;
-    right: 4px;
-    top: 4px;
-    width: 12px;
-    height: 8px;
-    background: #d5f3ff;
-    border-radius: 2px;
-    opacity: 0.8;
-}
-
-/* --- NEW: Multi-Car Train Animation Styles (Updated) --- */
-.train-container {
-    position: absolute;
-    display: flex;
-    flex-direction: row-reverse; /* Reverses order to put car #1 on the right */
-    align-items: center;
-    height: 24px;
-    gap: 8px; /* Adds a clean 8px space ONLY between cars */
-}
-
-.train-car {
-    position: relative;
-    width: 40px;
-    height: 22px;
-    border: 1px solid rgba(0, 0, 0, 0.4);
-    border-radius: 4px;
-    /* No margin needed here anymore, 'gap' handles it */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 700;
-    font-size: 0.9rem;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-}
-
-/* Special style for the first car (the engine) */
-.train-engine {
-    width: 45px; /* Slightly longer than other cars */
-    /* Adjusts border-radius for the new direction (front is on the right) */
-    border-radius: 8px 4px 4px 8px; 
-}
-
-/* Adds a small "window" to the engine car for detail */
-.train-engine::before {
-    content: '';
-    position: absolute;
-    right: 4px;
-    top: 4px;
-    width: 12px;
-    height: 8px;
-    background: #d5f3ff;
-    border-radius: 2px;
-    opacity: 0.8;
+/* --- Responsive --- */
+@media (max-width: 992px) {
+    .container { flex-direction: column; }
+    header h1 { font-size: 1.5rem; }
+    .header-logo { height: 40px; }
 }
